@@ -1,0 +1,34 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  /* Add this to your CSS file */
+
+
+  @media print {
+    body * {
+      visibility: hidden; /* Hide everything */
+    }
+    #receipt-content, #receipt-content * {
+      visibility: visible; /* Show the receipt content */
+    }
+    #receipt-content {
+      @media print {
+        body * {
+          visibility: hidden; /* Hide everything */
+        }
+        #receipt-content, #receipt-content * {
+          visibility: visible; /* Show the receipt content */
+        }
+        #receipt-content {
+          /*position: absolute;
+          top: 0;
+          left: 0;*/
+        }
+      }
+  
+    }
+  }
+  
