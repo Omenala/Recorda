@@ -62,9 +62,9 @@ function TransactionHistory() {
 
     return (
         <div className="container my-4">
-            <h1 className="mb-4">Transaction History</h1>
+            <h1 className="mb-4 text-center">Transaction History</h1>
 
-            <div className="mb-3 text-center">
+            <div className="mb-3">
                 <button className="btn btn-primary" onClick={handleAddNewTransaction}>
                     Add New
                 </button>
