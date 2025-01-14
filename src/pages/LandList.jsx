@@ -128,7 +128,7 @@ const LandList = () => {
           onClick={handleAddLandClick}
           style={{ marginBottom: "10px" }}
         >
-          Add New Land
+          Add New
         </button>
         <p className="text-muted text-end" style={{ marginBottom: "10px" }}>
           Showing {filteredLands.length} results
