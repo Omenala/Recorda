@@ -1,50 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function GlobalSearch() {
-  const [query, setQuery] = useState(''); // Search query
-  const [suggestions, setSuggestions] = useState([]); // Search suggestions
-  const [results, setResults] = useState([]); // Filtered results
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const token = localStorage.getItem('auth_token'); // Assuming the token is stored in localStorage
+  const navigate = useNavigate();
+  const token = localStorage.getItem("auth_token");
 
-  // Fetch keyword suggestions while typing
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (!query.trim()) {
-        setSuggestions([]);
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/search/lobal-search/', {
-          params: { q: query },
-          headers: {
-            Authorization: `Token ${token}`, // Include token in headers
-          },
-        });
-        setSuggestions(response.data?.suggestions || []);
-      } catch (err) {
-        setError('Failed to fetch suggestions.');
-        console.error('Error fetching suggestions:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const delayDebounceFn = setTimeout(fetchSuggestions, 300); // Debounce input
-    return () => clearTimeout(delayDebounceFn); // Cleanup timeout on unmount
-  }, [query, token]);
-
-  // Fetch search results on Enter or button click
   const handleSearch = async () => {
     if (!query.trim()) {
-      setError('Please enter a search term.');
+      setError("Please enter a search term.");
       return;
     }
 
@@ -52,99 +21,89 @@ function GlobalSearch() {
     setError(null);
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/search/global-search/', {
+      const response = await axios.get("http://127.0.0.1:8000/api/search/global-search/", {
         params: { q: query },
         headers: {
-          Authorization: `Bearer ${token}`, // Include token in headers
+          Authorization: `Token ${token}`,
         },
       });
-      setResults(response.data?.results || []);
+
+      const data = response.data.results || [];
+      setResults(data);
+
+      if (data.length === 0) {
+        setError("No results found for your search.");
+      }
     } catch (err) {
-      setError('Failed to fetch search results.');
-      console.error('Error fetching search results:', err);
+      setError("Failed to fetch search results. Please try again.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleResultClick = (result) => {
+    if (result.type === "land") {
+      navigate(`/search/lands/${encodeURIComponent(result.location)}?q=${encodeURIComponent(result.title)}`);
+    } else if (result.type === "transaction") {
+      navigate(`/transaction/${result.transaction_id}`);
+    }
+  };
+
   return (
-    <div className="global-search-container" style={{ position: 'relative' }}>
-      {/* Search Bar */}
-      <div className="d-flex align-items-center" style={{ width: '500px' }}>
+    <div className="global-search-container">
+      {/* Search Input and Button */}
+      <div
+        className="d-flex align-items-center justify-content-between"
+        style={{ marginBottom: "1rem" }}
+      >
         <input
           type="text"
           className="form-control"
-          placeholder="Search..."
+          placeholder="Search lands, transactions, or status..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)} // Update query state
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch()} // Trigger search on Enter
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+          style={{ flex: "1", minWidth: "250px" }}
         />
-        <button className="btn btn-light ms-2" onClick={handleSearch}>
-          🔍
+        <button
+          className="btn btn-primary"
+          onClick={handleSearch}
+          disabled={loading}
+          style={{ minWidth: "100px" }}
+        >
+          {loading ? "Searching..." : "Search"}
         </button>
       </div>
 
-      {/* Suggestions Popup */}
-      {query && suggestions.length > 0 && (
-        <div
-          className="suggestions-popup"
-          style={{
-            position: 'absolute',
-            top: '45px',
-            left: 0,
-            width: '500px',
-            color:'black',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            zIndex: 1000,
-            maxHeight: '200px',
-            overflowY: 'auto',
-            padding: '10px',
-          }}
-        >
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            {suggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                style={{ padding: '5px 0', cursor: 'pointer' }}
-                onClick={() => setQuery(suggestion)} // Set query to clicked suggestion
-              >
-                {suggestion}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Search Results Popup */}
+      {/* Display Results */}
       {results.length > 0 && (
-        <div
-          className="search-results"
-          style={{
-            marginTop: '20px',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            padding: '10px',
-          }}
-        >
-          <h5>Search Results:</h5>
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
+        <div className="search-results mt-3">
+          <ul className="list-group">
             {results.map((result, index) => (
               <li
                 key={index}
-                style={{ padding: '5px 0', borderBottom: '1px solid #eee' }}
+                className="list-group-item"
+                onClick={() => handleResultClick(result)}
+                style={{ cursor: "pointer" }}
               >
-                <strong>{result.title || result.name}</strong> - {result.description || result.location}
+                {result.type === "land" ? (
+                  <>
+                    <strong>Land:</strong> {result.title} - {result.location} <br />
+                    <strong>Status:</strong> {result.status}
+                  </>
+                ) : (
+                  <>
+                    <strong>Transaction:</strong> ID: {result.transaction_id}, Buyer: {result.buyer_name}, Amount: {result.amount}
+                  </>
+                )}
               </li>
             ))}
           </ul>
         </div>
       )}
 
-      {/* Error Message */}
+      {/* Error or No Results Message */}
       {error && <p className="text-danger mt-3">{error}</p>}
     </div>
   );

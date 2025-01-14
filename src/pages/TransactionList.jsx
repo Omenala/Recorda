@@ -61,7 +61,7 @@ const TransactionList = () => {
         }
 
         await axios.delete(
-          `http://127.0.0.1:8000/api/transaction/${transaction_Id}/`,
+          `https://recordabackend.onrender.com/api/transaction/${transaction_Id}/`,
           {
             headers: {
               Authorization: `Token ${token}`,

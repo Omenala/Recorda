@@ -39,7 +39,7 @@ const LoginForm = () => {
       };
 
       axios
-        .post("http://127.0.0.1:8000/api/authent/login/", payload)
+        .post("https://recordabackend.onrender.com/api/authent/login/", payload)
         .then((response) => {
           const { token } = response.data;
           localStorage.setItem("auth_token", token);

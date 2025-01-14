@@ -21,10 +21,10 @@ function TransactionHistory() {
         }
 
         Promise.all([
-            axios.get(`http://127.0.0.1:8000/api/land/${landId}/transactions/`, {
+            axios.get(`https://recordabackend.onrender.com/api/land/${landId}/transactions/`, {
                 headers: { Authorization: `Token ${token}` },
             }),
-            axios.get(`http://127.0.0.1:8000/api/land/${landId}/`, {
+            axios.get(`https://recordabackend.onrender.com/api/land/${landId}/`, {
                 headers: { Authorization: `Token ${token}` },
             }),
         ])

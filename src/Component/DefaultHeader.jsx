@@ -28,7 +28,7 @@ const DefaultHeader = () => {
 
         <div className="d-flex align-items-center">
 
-          <h1 className="h5 mb-0">RECORDA</h1>
+        <a className="navbar-brand font-" href="/">REKORDA</a>
 
         </div>
 

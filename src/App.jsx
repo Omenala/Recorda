@@ -111,6 +111,19 @@ function App() {
               </>
             }
           />
+
+           <Route
+            path="/search/lands/:location"
+            element={
+              <>
+                <DefaultHeader />
+                <main className="flex-grow-1">
+                  <LandList />
+                </main>
+                <Footer />
+              </>
+            }
+          />
           
           <Route
             path="/lands/upload"
@@ -139,7 +152,7 @@ function App() {
           />
 
          <Route
-            path="/transaction/list"
+            path="/transaction/list/"
             element={
               <>
                 <DefaultHeader />

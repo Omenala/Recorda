@@ -16,7 +16,7 @@ const LocationFilter = () => {
           throw new Error("Token is missing. Please log in again.");
         }
 
-        const response = await fetch("http://127.0.0.1:8000/api/land/list/", {
+        const response = await fetch("https://recordabackend.onrender.com/api/land/list/", {
           headers: {
             Authorization: `Token ${token}`,
           },

@@ -19,9 +19,8 @@ const LandList = () => {
         if (!token) {
           throw new Error("Token is missing. Please log in again.");
         }
-        console.log("Retrieved Token:", token);
 
-        const response = await fetch("http://127.0.0.1:8000/api/land/list/", {
+        const response = await fetch("https://recordabackend.onrender.com/api/land/list/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -53,11 +52,24 @@ const LandList = () => {
 
   useEffect(() => {
     const locationParam = searchParams.get("location");
+    const queryParam = searchParams.get("q");
+
+    // Filter lands by location and/or query
+    let updatedFilteredLands = lands;
+
     if (locationParam) {
-      setFilteredLands(lands.filter((land) => land.location === locationParam));
-    } else {
-      setFilteredLands(lands);
+      updatedFilteredLands = updatedFilteredLands.filter(
+        (land) => land.location === locationParam
+      );
     }
+
+    if (queryParam) {
+      updatedFilteredLands = updatedFilteredLands.filter((land) =>
+        land.title.toLowerCase().includes(queryParam.toLowerCase())
+      );
+    }
+
+    setFilteredLands(updatedFilteredLands);
   }, [searchParams, lands]);
 
   const getStatusBadge = (status) => {
@@ -161,3 +173,4 @@ const LandList = () => {
 };
 
 export default LandList;
+

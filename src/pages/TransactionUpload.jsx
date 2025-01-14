@@ -61,7 +61,7 @@ const TransactionUpload = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/transaction/upload/",
+        "https://recordabackend.onrender.com/api/transaction/upload/",
         formData,
         {
           headers: {

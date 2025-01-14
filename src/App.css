@@ -4,6 +4,13 @@
     font-family: 'Times New Roman', Times, serif;
   }
 
+  .hero{
+    background-image: url('./assets/images\ \(1\)\ \(24\).jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
   /* Add this to your CSS file */
 
 

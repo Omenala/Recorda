@@ -25,7 +25,7 @@ const VerifyEmailPage = () => {
     setIsLoading(true); // Show loading state
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/authent/verify-email/", {
+      const response = await fetch("https://recordabackend.onrender.com/api/authent/verify-email/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const VerifyEmailPage = () => {
   const handleResendCode = async () => {
     setIsLoading(true); // Show loading state for resend
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/authent/resend-email/", {
+      const response = await fetch("https://recordabackend.onrender.com/api/authent/resend-email/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,7 +6,7 @@ function CommonHeader() {
     <>
       <nav className="navbar navbar-expand-lg border-bottom border-success">
         <div className="container">
-          <a className="navbar-brand text-success" href="/">RECORDA<img src={'../src/assets/logo.png'} alt="logo" /></a>
+          <a className="navbar-brand text-success font-" href="/">REKORDA</a>
           <button
             className="navbar-toggler"
             type="button"

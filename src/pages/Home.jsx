@@ -4,7 +4,7 @@ import pics from '../assets/pics.png';
 function Home() {
   return (
     <div
-      className="container d-flex flex-column flex-md-row align-items-center"
+      className="container hero d-flex flex-column flex-md-row align-items-center"
       style={{ marginTop: '100px', padding: '20px' }}
     >
       {/* Text Section */}
@@ -52,4 +52,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Home; 

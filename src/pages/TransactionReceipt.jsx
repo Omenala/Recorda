@@ -33,7 +33,7 @@ const TransactionReceipt = () => {
 
         // Fetch transaction details
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/transaction/${id}/`,
+          `https://recordabackend.onrender.com/api/transaction/${id}/`,
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -47,7 +47,7 @@ const TransactionReceipt = () => {
         // Fetch land details using landId from the transaction
         if (transactionData.land) {
           const landResponse = await axios.get(
-            `http://127.0.0.1:8000/api/land/${transactionData.land}/`,
+            `https://recordabackend.onrender.com/api/land/${transactionData.land}/`,
             {
               headers: {
                 Authorization: `Token ${token}`,
